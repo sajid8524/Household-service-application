@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .card:hover {
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .rating {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Welcome Customer</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="/customer/dashboard">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/customer/search">Search</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/customer/summary">Summary</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Section -->
+        <div class="row">
+            <!-- Sidebar for Categories -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h5 class="card-title">Looking For?</h5>
+                    <div class="list-group">    
+                        {% for service in services %}
+                        <a onclick="ServiceSelect({{service.id}})" href="#" class="list-group-item list-group-item-Rating">{{service.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+              
+                <!-- Service History -->
+                <div class="card p-3">
+                    <h5 class="card-title">Service History</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ServiceName</th>
+                                <th>Professional Name</th>
+                                <th>Status</th>
+                                <th>Ratings</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceHistory">
+                            {% for sr in srs %}
+                            <tr>
+                                <td>{{sr.id}}</td>
+                                <td>{{sr.service.name}}</td>
+                                <td>{{sr.professional.fullname}}</td>
+                                <td id="status{{sr.id}}">
+                                    {{sr.service_status}}
+                                    {% if sr.service_status == 'accepted'%}
+                                    <button class="btn btn-success btn-sm" onclick="closeServiceRequest({{sr.id}})">Close It</button>
+                                    {% endif %}
+                                </td>
+                                {% if sr.service_status == 'closed'%}
+                                
+                                    <td><button class="btn btn-warning btn-sm" onclick="rateService({{sr.id}},'{{sr.service.name}}','{{sr.professional.fullname}}')">Rate</button> {{sr.rating}}</td>
+                                {% endif %}
+
+                            </tr>
+                            {% endfor %}
+                           
+                        </tbody>
+                    </table>
+                </div>
+                <br><br>
+                <div id="professional_servicers" class="card mb-4 p-3">
+                    <table class="table table-striped" id="servicesTable">
+                        <thead>
+                            <tr id="row1">
+                                <th>ID</th>
+                                <th>ServiceName</th>
+                                <th>Professional Name</th>
+                                <th>Contact</th>
+                                <th>Price</th>
+                                <th>Rating</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody">
+                        </tbody>
+                    </table>
+            
+                    <!-- Pagination -->
+                    <nav>
+                        <ul class="pagination justify-content-center" id="pagination1">
+                        </ul>
+                    </nav>
+                </div> 
+            </div>
+        </div>
+
+    <!-- Modal for Service Rating -->
+    <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ratingModalLabel">Rate Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>ServiceName: <span id="serviceName"></span></p>
+                    <p>Professional Name: <span id="professionalName"></span></p>
+                    <div>
+                        <label for="rating">Rating:</label>
+                        <select id="rating" class="form-select">
+                            <option value="1">⭐</option>
+                            <option value="2">⭐⭐</option>
+                            <option value="3">⭐⭐⭐</option>
+                            <option value="4">⭐⭐⭐⭐</option>
+                            <option value="5">⭐⭐⭐⭐⭐</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="submitRating()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        function searchServices() {
+            const searchInput = document.getElementById('searchInput').value;
+            alert(`Searching for: ${searchInput}`);
+        }
+        var sid;
+        function rateService(serviceId, service_name, professional_name) {
+            sid = serviceId
+            const modal = new bootstrap.Modal(document.getElementById('ratingModal'));
+            document.getElementById('serviceName').textContent = service_name; 
+            document.getElementById('professionalName').textContent = professional_name;
+            modal.show();
+        }
+
+        function submitRating() {
+            const rating = document.getElementById('rating').value;
+            const data = {
+                id: sid,
+                rating: rating
+            }
+            fetch('/customer/rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Specify JSON data
+                },
+                body: JSON.stringify(data) // Convert data to JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse JSON response
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                console.log(data)
+              
+                alert(`Rating submitted: ${rating} stars`);
+              
+
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                alert("Failed to give rating to service request.");
+            });
+          
+            
+        }
+
+        var professionals = []
+
+        $('#professional_servicers').hide();
+        $('#row1').hide();
+
+        function closeServiceRequest(request_id){
+            const data = {
+                id: request_id,
+            }
+            fetch('/customer/close', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Specify JSON data
+                },
+                body: JSON.stringify(data) // Convert data to JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse JSON response
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                console.log(data)
+                $("#status"+request_id).text('Closed')
+                alert("Service Request Closed")
+              
+                
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                alert("Failed to close service request.");
+            });
+        }
+
+        function ServiceSelect(id){
+            $('#professional_servicers').show();
+            $('#row1').show();
+            var items = []
+            const data = {
+                id: id
+            }
+            fetch('/customer/professional', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Specify JSON data
+                },
+                body: JSON.stringify(data) // Convert data to JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse JSON response
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                console.log(data)
+                professionals =  data['professionals'];
+                renderServicesTable1(currentPage);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add service.');
+            });
+
+            const rowsPerPage = 5; // Number of rows per page
+            let currentPage = 1;
+            // Function to render services
+            function renderServicesTable1(page=1) {
+                const tableBody = document.getElementById("servicesTableBody");
+                tableBody.innerHTML = ""; // Clear previous content
+
+                // Calculate start and end index for the current page
+                const startIndex = (page - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+
+                const currentProfessionals = professionals.slice(startIndex, endIndex);
+
+                // Render table rows
+                var count=0;
+                
+                currentProfessionals.forEach((professional) => {
+                    count+=1;
+                    
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><a href="#">${professional.id}</a></td>
+                        <td id='name${count}'>${professional.service_name}</td>
+                        <td id='name${count}'>${professional.fullname}</td>
+                        <td id='price${count}'>${professional.address}</td>
+                        <td id='price${count}'>${professional.price}</td>
+                        <td id='price${count}'>${professional.rating}</td>
+                        <td>
+                            <button class="btn btn-success btn-sm" onclick=requestBooking(${professional.id})>Book</button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+
+                // Update pagination
+                renderPagination1();
+            }
+
+            // Function to render pagination
+            function renderPagination1() {
+                const pagination = document.getElementById("pagination1");
+                pagination.innerHTML = ""; // Clear previous content
+
+                const totalPages = Math.ceil(professionals.length / rowsPerPage);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageItem = document.createElement("li");
+                    pageItem.className = `page-item ${i === currentPage ? "active" : ""}`;
+                    pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+
+                    // Add click event to change page
+                    pageItem.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        renderServicesTable1(currentPage);
+                    });
+
+                    pagination.appendChild(pageItem);
+                }
+            }
+
+            // Initial render
+            
+        }   
+
+        function requestBooking(sp_id){
+            const data = {
+                professional_id: sp_id
+            }
+            fetch('/customer/book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Specify JSON data
+                },
+                body: JSON.stringify(data) // Convert data to JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse JSON response
+                } else {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                console.log(data)
+                $("#serviceHistory").append(`
+                <tr>
+                    <td>${data.data.id}</td>
+                    <td>${data.data.service_name}</td>
+                    <td>${data.data.fullname}</td>
+                    <td>${data.data.status}</td>
+
+                </tr>
+                `)
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to book service.');
+            });
+        }
+
+    </script>
+</body>
+</html>
