@@ -1,0 +1,465 @@
+/* =========================== Global Styles =========================== */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(to right, #ffd699, #ffe6cc); /* Light orange gradient */
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3, p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}
+
+/* ========================== Welcome Section Styles =========================== */
+.welcome-section {
+  text-align: center;
+  padding-top: 100px; /* Use padding instead of margin */
+  margin-bottom: 40px;
+}
+
+.welcome-section h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.welcome-section p {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* =========================== Home Container =========================== */
+.home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  position: relative; /* Needed for footer positioning */
+}
+
+/* =========================== Button Container =========================== */
+.button-container {
+  text-align: center; /* Center the button horizontally */
+  margin-top: auto; /* Push the button to the middle */
+  margin-bottom: auto; /* Push the button to the middle */
+}
+
+.cta-button {
+  padding: 10px 20px;
+  background-color: #d3ff7b;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background-color: #93db04;
+}
+
+/* =========================== Footer Styles =========================== */
+footer {
+  position: absolute; /* Position the footer absolutely within the .home container */
+  bottom: 0; /* Stick to the bottom */
+  left: 0;
+  width: 100%;
+  background-color: #000000;
+  color: #f5f5f5;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* =========================== Form Styles =========================== */
+.form-container {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-submit {
+  padding: 10px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+}
+
+.btn-submit:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+/* =========================== Modal Styles =========================== */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #aaa;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* =========================== Navigation Styles =========================== */
+nav {
+  padding: 1rem;
+  border-radius: 20px;
+}
+
+.nav-link {
+  color: var(--bs-white);
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 20px;
+}
+
+.nav-link.active {
+  background-color: var(--bs-white);
+  color: var(--bs-white) !important;
+}
+
+.nav-link:hover {
+  background-color: var(--bs-white) !important;
+  color: var(--bs-black) !important;
+}
+
+/* =========================== Profile Page Styles =========================== */
+.profile-container {
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* =========================== Dashboard Styles =========================== */
+.service-type-box {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.professional-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #a9d3ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* =========================== Search Bar Styles =========================== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 380px;
+  margin-bottom: 20px;
+  padding: 5px;
+  border-radius: 8px;
+  background-color: rgba(47, 40, 40, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input {
+  flex: 1;
+  width: 20px;
+  margin-right: 5px;
+  padding: 6px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.search-bar input:focus {
+  border-color: #a8d2ff;
+  outline: none;
+  width: 20px;
+  background-color: rgb(56, 52, 52);
+  color: white;
+}
+
+.search-bar button {
+  padding: 6px 12px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #b1d6fe;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+/* =========================== Chart Styles =========================== */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================== Home Page Styles =========================== */
+.hero {
+  background-color: #f0f0f0;
+  padding: 50px;
+}
+
+.services {
+  padding: 50px;
+}
+
+.service-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.service-item {
+  text-align: center;
+  width: 200px;
+}
+
+.service-item img {
+  width: 125px;
+  height: 200px;
+}
+
+.how-it-works {
+  background-color: #8ea9f8;
+  padding: 50px;
+  color: rgb(0, 0, 0);
+  border-radius: 20px;
+}
+
+.how-it-works h2 {
+  color: rgb(4, 3, 3);
+}
+
+.steps {
+  display: flex;
+  justify-content: space-around;
+}
+
+.testimonials {
+  padding: 50px;
+}
+
+/* =========================== Small Textarea Styles =========================== */
+.small-textarea {
+  width: 120px;
+  height: 30px;
+  resize: both;
+}
+
+/* =========================== Dropdown Menu Styles =========================== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background-color: #6c757d; /* Gray background */
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-toggle:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa; /* Light gray on hover */
+}
+
+.dropdown-item:active {
+  background-color: #e9ecef; /* Slightly darker gray on active */
+}
+
+/* Specific styles for Activate, Reject, and Delete buttons */
+.dropdown-item.activate {
+  color: #28a745; /* Green for Activate */
+}
+
+.dropdown-item.reject {
+  color: #dc3545; /* Red for Reject */
+}
+
+.dropdown-item.delete {
+  color: #dc3545; /* Red for Delete */
+}
+
+.dropdown-item.block {
+  color: #ffc107; /* Yellow for Block */
+}
+
+.dropdown-item.unblock {
+  color: #17a2b8; /* Cyan for Unblock */
+}
+
+/* Hover effects for specific buttons */
+.dropdown-item.activate:hover {
+  background-color: rgba(40, 167, 69, 0.1); /* Light green on hover */
+}
+
+.dropdown-item.reject:hover,
+.dropdown-item.delete:hover {
+  background-color: rgba(220, 53, 69, 0.1); /* Light red on hover */
+}
+
+.dropdown-item.block:hover {
+  background-color: rgba(255, 193, 7, 0.1); /* Light yellow on hover */
+}
+
+.dropdown-item.unblock:hover {
+  background-color: rgba(23, 162, 184, 0.1); /* Light cyan on hover */
+}
